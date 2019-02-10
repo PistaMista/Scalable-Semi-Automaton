@@ -12,28 +12,36 @@ public class Board : MonoBehaviour
     void Start()
     {
         tilemap = GetComponentInChildren<Tilemap>();
-        set_positions = new List<Vector3Int>();
+        position_set_in_one_go = new List<Vector2Int>();
     }
 
-    List<Vector3Int> set_positions;
+    List<Vector2Int> position_set_in_one_go;
     void Update()
     {
         if (Input.GetMouseButton(0))
         {
-            Vector3Int cell_position = tilemap.WorldToCell(Camera.main.ScreenToWorldPoint(Input.mousePosition));
 
-            if (!set_positions.Contains(cell_position))
+            Vector3Int tilemap_position = tilemap.WorldToCell(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+            Vector2Int cell_position = new Vector2Int(tilemap_position.x, tilemap_position.y);
+
+            if (!position_set_in_one_go.Contains(cell_position))
             {
-                tilemap.SetTile(cell_position, tilemap.GetTile(cell_position) == tileOff ? tileOn : tileOff);
-                set_positions.Add(cell_position);
+                SetTile(cell_position, tilemap.GetTile(tilemap_position) == tileOff);
+                //World.current[cell_position.x, cell_position.y] = 
+                position_set_in_one_go.Add(cell_position);
             }
         }
-        else if (Input.GetMouseButtonUp(0)) set_positions = new List<Vector3Int>();
+        else if (Input.GetMouseButtonUp(0)) position_set_in_one_go = new List<Vector2Int>();
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
             ApplyRules();
         }
+    }
+
+    void SetTile(Vector2Int cellPosition, bool active)
+    {
+        tilemap.SetTile(new Vector3Int(cellPosition.x, cellPosition.y, 0), active ? tileOn : tileOff);
     }
 
     void ApplyRules()
