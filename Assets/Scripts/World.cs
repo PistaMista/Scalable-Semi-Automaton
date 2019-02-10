@@ -9,8 +9,9 @@ using UnityEngine;
 
 public class World
 {
+
     public static World current;
-    public string name;
+
     public bool this[int x, int y]
     {
         get
@@ -38,7 +39,7 @@ public class World
             }
 
             BinaryFormatter formatter = new BinaryFormatter();
-            FileStream stream = new FileStream(Path.Combine(Application.persistentDataPath, World.current.name + "/" + position.ToString()), FileMode.Open);
+            FileStream stream = new FileStream(Path.Combine(Application.persistentDataPath, position.ToString()), FileMode.Open);
 
             World.current.loadedChunks.Add(position, (Chunk)formatter.Deserialize(stream));
             stream.Close();
@@ -52,7 +53,7 @@ public class World
             }
 
             BinaryFormatter formatter = new BinaryFormatter();
-            FileStream stream = new FileStream(Path.Combine(Application.persistentDataPath, World.current.name + "/" + position.ToString()), FileMode.Create);
+            FileStream stream = new FileStream(Path.Combine(Application.persistentDataPath, position.ToString()), FileMode.Create);
             formatter.Serialize(stream, World.current.loadedChunks[position]);
 
             World.current.loadedChunks.Remove(position);
