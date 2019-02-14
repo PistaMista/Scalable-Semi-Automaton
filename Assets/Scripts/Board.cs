@@ -13,6 +13,8 @@ public class Board : MonoBehaviour
     {
         tilemap = GetComponentInChildren<Tilemap>();
         position_set_in_one_go = new List<Vector2Int>();
+
+        World.Load("test");
     }
 
     List<Vector2Int> position_set_in_one_go;
@@ -42,10 +44,26 @@ public class Board : MonoBehaviour
     void SetTile(Vector2Int cellPosition, bool active)
     {
         tilemap.SetTile(new Vector3Int(cellPosition.x, cellPosition.y, 0), active ? tileOn : tileOff);
+        World.current[cellPosition.x, cellPosition.y] = new Tile(active);
     }
 
     void ApplyRules()
     {
 
     }
+
+    void OnApplicationQuit()
+    {
+        World.Unload();
+    }
+}
+
+[System.Serializable]
+public struct Tile
+{
+    public Tile(bool alive)
+    {
+        this.alive = alive;
+    }
+    public bool alive;
 }
