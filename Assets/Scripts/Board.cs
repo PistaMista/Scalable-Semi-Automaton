@@ -6,7 +6,7 @@ using UnityEngine.Tilemaps;
 
 public class Board : MonoBehaviour
 {
-    Tilemap tilemap;
+    public static Tilemap tilemap;
     public TileBase tileOn;
     public TileBase tileOff;
     void Start()
