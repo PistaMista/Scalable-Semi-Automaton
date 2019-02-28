@@ -42,6 +42,8 @@ public struct World
         {
             BinaryFormatter formatter = new BinaryFormatter();
             FileStream stream = new FileStream(GetInfoFilePath(world_name), FileMode.Open);
+
+            current = (World)formatter.Deserialize(stream);
         }
         catch
         {
@@ -52,12 +54,12 @@ public struct World
         current.loadedChunks = new Dictionary<Vector2Int, Chunk>();
         return true;
 
-        if (!(Directory.Exists(world_path)))
-        {
-            Directory.CreateDirectory(world_path);
-            current.name = world_name;
-            current.chunk_size = Chunk.default_chunk_size;
-        }
+        // if (!(Directory.Exists(world_path)))
+        // {
+        //     Directory.CreateDirectory(world_path);
+        //     current.name = world_name;
+        //     current.chunk_size = Chunk.default_chunk_size;
+        // }
 
 
     }
